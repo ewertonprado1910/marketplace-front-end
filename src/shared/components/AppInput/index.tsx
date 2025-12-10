@@ -1,0 +1,78 @@
+import { Pressable, Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native"
+import { Ionicons } from "@expo/vector-icons"
+
+import { appInputVariants, AppInputVariantsProps } from "./input.variants"
+import { FC } from "react"
+import { useAppInputViewModel } from "./useAppInputViewModel"
+
+export interface AppInputProps extends TextInputProps, AppInputVariantsProps {
+    label?: string,
+    leftIcon?: keyof typeof Ionicons.glyphMap,
+    rightIcon?: keyof typeof Ionicons.glyphMap,
+    containerClassName?: string,
+    mask?: (value: string) => void | string
+    error?: string
+}
+
+export const AppInput: FC<AppInputProps> = ({
+    label,
+    leftIcon,
+    rightIcon,
+    containerClassName,
+    value,
+    isError,
+    secureTextEntry = false,
+    onBlur,
+    onFocus,
+    onChangeText,
+    mask,
+    error,
+    isDisabled,
+    ...textInputProps
+}) => {
+    const {
+        getItemColor,
+        handleBlur,
+        handleFocus,
+        handlePasswordToggle,
+        handleWarapperPress,
+        showPassword,
+        handleTextChange,
+        isFocused
+
+    } = useAppInputViewModel({
+        error,
+        onBlur,
+        onFocus,
+        isError: !!error,
+        mask,
+        onChangeText,
+        secureTextEntry,
+        value
+    })
+
+    const style = appInputVariants({
+        isFocused
+    })
+
+    return (
+        <View className={style.container(
+            { className: containerClassName })}>
+
+            <Text className={style.label()}>{label}</Text>
+            <Pressable className={style.wrapper()}>
+                <Ionicons className="mr-3" name="person" size={22} />
+
+                <TextInput
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                    className={style.input()}
+                    {...textInputProps} />
+
+                <TouchableOpacity>
+                    <Ionicons name="eye-off-outline" size={22} />
+                </TouchableOpacity>
+            </Pressable>
+        </View>
+    )
+}
