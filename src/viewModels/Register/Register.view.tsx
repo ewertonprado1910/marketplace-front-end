@@ -1,30 +1,40 @@
 import { router } from "expo-router"
-import { FC } from "react"
+import { FC, useState } from "react"
 
 import { Button, Text, TouchableOpacity, View } from "react-native"
 import { useRegisterViewModel } from "./useRegister.viewModel"
-import { AppInput } from "../../shared/components/AppInput"
+import { AppInputController } from "../../shared/components/AppInputController"
+import { AuthFormHeader } from "../../shared/components/AuthFormHeader"
 
 export const RegisterView: FC<
     ReturnType<typeof useRegisterViewModel>
 > = ({
-    onSubmit
+    onSubmit,
+    control
 }) => {
+
+        const [email, setEmail] = useState("")
 
         return (
             <View className="flex-1 items-center justify-center">
-                <AppInput label="Nome" />
-                <AppInput label="Email"/>
+                <AuthFormHeader
+                    title="Crie sua conta"
+                    subTitle="Informe seus daos pessoais e de acesso" />
+
+                <AppInputController
+                    leftIcon="mail-outline"
+                    label="E-MAIL"
+                    control={control}
+                    name={"email"} />
 
                 <TouchableOpacity className="mb-5 mt-10"
                     onPress={() => {
-                        console.log("clicou")
                         onSubmit()
                     }}>
-                    <Text>Registrar usuario</Text>
+
                 </TouchableOpacity>
 
-                <Button title="Voltar " onPress={() => router.back()} ></Button>
+                <Button title="Voltar " onPress={() => router.push("/login")} ></Button>
             </View>
         )
     }

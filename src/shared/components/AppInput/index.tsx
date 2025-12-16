@@ -38,21 +38,23 @@ export const AppInput: FC<AppInputProps> = ({
         handleWarapperPress,
         showPassword,
         handleTextChange,
-        isFocused
+        isFocused,
 
     } = useAppInputViewModel({
-        error,
         onBlur,
         onFocus,
         isError: !!error,
         mask,
         onChangeText,
+        isDisabled,
         secureTextEntry,
         value
     })
 
     const style = appInputVariants({
-        isFocused
+        isFocused,
+        isDisabled,
+        isError: !!error
     })
 
     return (
@@ -61,18 +63,40 @@ export const AppInput: FC<AppInputProps> = ({
 
             <Text className={style.label()}>{label}</Text>
             <Pressable className={style.wrapper()}>
-                <Ionicons className="mr-3" name="person" size={22} />
+
+                {leftIcon && 
+                    <Ionicons
+                        color={getItemColor()}
+                        className="mr-3"
+                        name={leftIcon}
+                        size={22} />
+                }
 
                 <TextInput
                     onBlur={handleBlur}
                     onFocus={handleFocus}
                     className={style.input()}
+                    value={value}
+                    onChangeText={handleTextChange}
+                    secureTextEntry={showPassword}
                     {...textInputProps} />
 
-                <TouchableOpacity>
-                    <Ionicons name="eye-off-outline" size={22} />
-                </TouchableOpacity>
+                {secureTextEntry && (
+                    <TouchableOpacity activeOpacity={0.7}
+                        onPress={handlePasswordToggle}>
+                        <Ionicons
+                            name={showPassword ? "eye-off-outline" : "eye-outline"}
+                            size={22} />
+                    </TouchableOpacity>
+                )}
             </Pressable>
+
+            {error && (
+                <Text className={style.error()}>
+                    <Ionicons name="alert-circle-outline" /> {error}
+                </Text>
+            )}
+
         </View>
     )
 }

@@ -4,11 +4,9 @@ import { BlurEvent, FocusEvent, TextInput } from "react-native"
 
 import { colors } from "../../../styles/colors"
 
-
 interface AppInputViewModelProps {
     isError?: boolean
     isDisabled?: boolean
-    error?: string
     secureTextEntry?: boolean
     onFocus?: (event: FocusEvent) => void
     onBlur?: (event: BlurEvent) => void
@@ -20,7 +18,6 @@ interface AppInputViewModelProps {
 export const useAppInputViewModel = ({
     isError,
     isDisabled,
-    error,
     secureTextEntry,
     onFocus,
     onBlur,
@@ -28,7 +25,7 @@ export const useAppInputViewModel = ({
     onChangeText,
     value
 }: AppInputViewModelProps) => {
-    const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(secureTextEntry)
     const [isFocused, setIsFocused] = useState(false)
 
     const inputRef = useRef<TextInput>(null)
@@ -54,13 +51,11 @@ export const useAppInputViewModel = ({
     }
 
     const getItemColor = () => {
-        if (isFocused) return colors["purple-base"]
-
         if (isError) return colors.danger
-
+        if (isFocused) return colors["purple-base"]
         if (value) return colors["purple-base"]
 
-        return colors.grays[200]
+        return colors.gray[200]
     }
 
     const handleTextChange = (text: string) => {
