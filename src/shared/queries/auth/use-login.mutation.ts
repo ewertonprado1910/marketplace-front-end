@@ -2,22 +2,23 @@ import { useMutation } from "@tanstack/react-query"
 
 import * as authService from "../../services/alth.service"
 import { LoginHttpParams } from "../../interfaces/http/login"
+import { useUserStore } from "../../store/user-store"
 
 export const useLoginMutation = () => {
+    const { setSession } = useUserStore()
+
     const mutation = useMutation({
         mutationFn: (userData: LoginHttpParams) =>
             authService.Login(userData),
 
-        onSuccess: (resposne) => {
-            console.log("SUCESSO", resposne)
+        onSuccess: (response) => {
+            setSession(response)
+            console.log("SUCESSO", response)
         },
 
         onError: (error: any) => {
-            // console.log(error),
-            console.log("AXIOS ERROR:", error);
-            console.log("REQUEST URL:", error?.config?.url);
-            console.log("REQUEST BASE URL:", error?.config?.baseURL);
-            console.log("REQUEST METHOD:", error?.config?.method);
+            console.log(error)
+
         }
     })
     return mutation

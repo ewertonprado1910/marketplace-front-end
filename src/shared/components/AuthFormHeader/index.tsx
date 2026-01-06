@@ -13,7 +13,7 @@ export const AuthFormHeader: FC<AuthFormHeaderProps> = ({
     title
 }) => {
     return (
-        <View className="items-center mb-8">
+        <View className="flex-1 items-center mb-10">
             <Image
                 source={require("../../../assets/images/Logo.png")}
                 resizeMode="contain"
@@ -23,7 +23,7 @@ export const AuthFormHeader: FC<AuthFormHeaderProps> = ({
             <Text className="text-3xl font-bold mb-3 text-gray-500">
                 {title}
             </Text>
-            <Text className="text-base text-gray-300">
+            <Text className="text-base text-gray-300 text-center">
                 {subTitle}
             </Text>
         </View>

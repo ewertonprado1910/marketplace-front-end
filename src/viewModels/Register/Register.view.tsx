@@ -6,6 +6,7 @@ import { useRegisterViewModel } from "./useRegister.viewModel"
 import { AppInputController } from "../../shared/components/AppInputController"
 import { AuthFormHeader } from "../../shared/components/AuthFormHeader"
 import { KeyboardContainer } from "../../shared/components/KeyboardContainer"
+import { AppButton } from "../../shared/components/AppButton"
 
 
 export const RegisterView: FC<
@@ -27,7 +28,7 @@ export const RegisterView: FC<
                     overScrollMode="never"
                     scrollEventThrottle={16}
                 >
-                    <View className="flex-1  px-[40px]">
+                    <View className="flex-1 px-[40px]">
                         <AuthFormHeader
                             title="Crie sua conta"
                             subTitle="Informe seus daos pessoais e de acesso" />
@@ -78,14 +79,26 @@ export const RegisterView: FC<
                             placeholder="Digíte novamente a senha"
                         />
 
-                        <TouchableOpacity className="mb-5 mt-5"
+                        <AppButton
+                            children="Registrar"
+                            className="mt-3"
                             onPress={() => {
                                 onSubmit()
-                            }}>
+                            }}
+                        />
 
-                        </TouchableOpacity>
+                        <View className="flex-2 mt-10">
+                            <Text className="text-base mt-14 text-gray-300">
+                                Já possui conta?
+                            </Text>
+                            <AppButton
+                            className="mt-1"
+                                children="Login"
+                                variant="outlined"
+                                onPress={() => router.push("/login")}
+                            />
 
-                        <Button title="Voltar " onPress={() => router.push("/login")} ></Button>
+                        </View>
                     </View>
                 </ScrollView>
             </KeyboardContainer>
