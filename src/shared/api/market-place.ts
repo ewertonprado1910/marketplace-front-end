@@ -1,6 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosInstance } from "axios"
 
-const baseURL = "http://192.168.1.39:3001"
+export const baseURL = "http://192.168.1.39:3001"
 
 export class MarketPlaceApiClient {
   private instance: AxiosInstance;
@@ -8,11 +9,38 @@ export class MarketPlaceApiClient {
   constructor() {
     this.instance = axios.create({
       baseURL,
-    });
+    })
+    this.setupInterceptors()
   }
 
   getInstance() {
     return this.instance
+  }
+
+  private setupInterceptors() {
+    this.instance.interceptors.request.use(async (config) => {
+      const userData = await AsyncStorage.getItem("marketplace-auth")
+      console.log(userData)
+
+      if (userData) {
+        const {
+          state: { token }
+        } = JSON.parse(userData)
+
+        console.log(token, "Token deu certo")
+
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`
+          console.log("TOKEN NO HEADER:", config.headers.Authorization)
+
+        }
+      }
+
+      return config
+
+    }, (error) => {
+      return Promise.reject(error)
+    })
   }
 }
 

@@ -2,22 +2,35 @@ import { useMutation } from "@tanstack/react-query"
 
 import * as authService from "../../services/alth.service"
 import { RegisterHttpParams } from "../../interfaces/http/register"
+import { AuthResponse } from "../../interfaces/http/auth.resposne"
+import { useUserStore } from "../../store/user-store"
 
-export const useRegisterMutation = () => {
+interface UseRegisterMutationParams {
+    onSuccess?: () => void
+}
+
+export const useRegisterMutation = ({
+    onSuccess
+}: UseRegisterMutationParams = {}) => {
+
+    const { setSession } = useUserStore()
+
     const mutation = useMutation({
         mutationFn: (userData: RegisterHttpParams) =>
             authService.Register(userData),
 
-        onSuccess: (resposne) => {
-            console.log("SUCESSO0", resposne)
+        onSuccess: (response) => {
+            setSession({
+                refreshToken: response.refreshToken,
+                token: response.token,
+                user: response.user
+            })
+            console.log("SUCESSO", response)
+            onSuccess?.()
         },
 
         onError: (error: any) => {
-            // console.log(error),
-            console.log("AXIOS ERROR:", error);
-            console.log("REQUEST URL:", error?.config?.url);
-            console.log("REQUEST BASE URL:", error?.config?.baseURL);
-            console.log("REQUEST METHOD:", error?.config?.method);
+            console.log(error)
         }
     })
     return mutation

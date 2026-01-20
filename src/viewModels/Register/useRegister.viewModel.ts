@@ -4,10 +4,25 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { RegisterFormData, registerSchema } from "../Register/register.schema"
 import { useRegisterMutation } from "../../shared/queries/auth/use-register.mutation"
 import { useUserStore } from "../../shared/store/user-store"
+import { useImage } from "../../shared/hooks/useImage"
+import { useState } from "react"
+import { CameraType } from "expo-image-picker"
+import { useUploadAvatarMutation } from "../../shared/queries/auth/use-upload-avatar.mutation"
+
+
 
 export const useRegisterViewModel = () => {
-    const userRegisterMutation = useRegisterMutation()
-    const { setSession, user } = useUserStore()
+    const { updateUser } = useUserStore()
+    const [avatarUri, setAvatarUri] = useState<string | null>(null)
+
+    const { hanldeSelectImage } = useImage({
+        callback: setAvatarUri,
+        cameraType: CameraType.front
+    })
+
+    const hanldeSelectionAvatar = async () => {
+        await hanldeSelectImage()
+    }
 
     const {
         control,
@@ -24,24 +39,34 @@ export const useRegisterViewModel = () => {
         }
     })
 
-    const onSubmit = handleSubmit(async (userData) => {
-        const { confirmPassword, ...registerData } = userData
+    const uploadAvatarMutatio = useUploadAvatarMutation()
 
-        const mutationResponse = await userRegisterMutation.mutateAsync(
-            registerData
-        )
-        setSession({
-            refreshToken: mutationResponse.refreshToken,
-            token: mutationResponse.token,
-            user: mutationResponse.user
-        })
+    const userRegisterMutation = useRegisterMutation({
+        onSuccess: async () => {
+
+            if (avatarUri) {
+                const { url } = await uploadAvatarMutatio.mutateAsync(avatarUri)
+               
+                console.log(url)
+                updateUser({ avatarUrl: url })
+            }
+        }
     })
 
-    console.log(user)
+    const onSubmit = handleSubmit(async (userData) => {
+        const { confirmPassword, ...registerData } = userData
+        await userRegisterMutation.mutateAsync(
+            registerData
+        )
+    })
+
+    // console.log(user)
 
     return {
         control,
         errors,
-        onSubmit
+        onSubmit,
+        hanldeSelectionAvatar,
+        avatarUri
     }
 }
