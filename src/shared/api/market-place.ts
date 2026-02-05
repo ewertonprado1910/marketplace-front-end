@@ -1,10 +1,12 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios, { AxiosInstance } from "axios"
+import { useUserStore } from "../store/user-store"
 
-export const baseURL = "http://192.168.1.39:3001"
+export const baseURL = "http://192.168.1.40:3001"
 
 export class MarketPlaceApiClient {
-  private instance: AxiosInstance;
+  private instance: AxiosInstance
+  private isRefreshing = false
 
   constructor() {
     this.instance = axios.create({
@@ -20,7 +22,6 @@ export class MarketPlaceApiClient {
   private setupInterceptors() {
     this.instance.interceptors.request.use(async (config) => {
       const userData = await AsyncStorage.getItem("marketplace-auth")
-      console.log(userData)
 
       if (userData) {
         const {
@@ -35,12 +36,81 @@ export class MarketPlaceApiClient {
 
         }
       }
-
       return config
 
     }, (error) => {
       return Promise.reject(error)
     })
+
+    this.instance.interceptors.response.use(
+      (response) => response,
+
+      async (error) => {
+        const originalRequest = error.config
+
+        if (
+          error.response?.status === 401 &&
+          error.response?.data?.message === "Token expirado" &&
+          !this.isRefreshing
+        ) {
+          this.isRefreshing = true
+
+          try {
+            const userData = await AsyncStorage.getItem("marketplace-auth")
+
+            if (!userData) {
+              throw new Error("Usuário não autenticado.")
+            }
+            const { state: { refreshToken } } = JSON.parse(userData)
+
+            if (!refreshToken) {
+              throw new Error("Refresh token não encontrado")
+            }
+
+            const { data: response } = await this.instance.post("/auth/refresh", {
+              refreshToken
+            })
+
+            const currentUserData = JSON.parse(userData)
+
+            currentUserData.state.token = response.token
+            currentUserData.state.refreshToken = response.refreshToken
+
+            await AsyncStorage.setItem("marketplace-auth",
+              JSON.stringify(currentUserData)
+            )
+
+            originalRequest.headers.Authorization = `Bearer ${response.token}`
+
+            return this.instance(originalRequest)
+
+          } catch (error) {
+            this.hanldeUnauthorized()
+
+            return Promise.reject(new Error("Sessão expirada, faça o login novamente!"))
+          } finally {
+
+            this.isRefreshing = false
+          }
+        }
+
+        if (error.response && error.response.data) {
+
+          return Promise.reject(new Error(error.response.data.message))
+
+        } else {
+
+          return Promise.reject(new Error("Falha na requisição"))
+        }
+      }
+    )
+  }
+
+  private async hanldeUnauthorized() {
+    const { logout } = useUserStore.getState()
+
+    delete this.instance.defaults.headers.common["Authorization"]
+    logout()
   }
 }
 
