@@ -28,12 +28,8 @@ export class MarketPlaceApiClient {
           state: { token }
         } = JSON.parse(userData)
 
-        console.log(token, "Token deu certo")
-
         if (token) {
           config.headers.Authorization = `Bearer ${token}`
-          console.log("TOKEN NO HEADER:", config.headers.Authorization)
-
         }
       }
       return config

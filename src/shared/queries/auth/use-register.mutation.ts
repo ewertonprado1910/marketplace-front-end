@@ -25,12 +25,11 @@ export const useRegisterMutation = ({
                 token: response.token,
                 user: response.user
             })
-            console.log("SUCESSO", response)
             onSuccess?.()
         },
 
         onError: (error: any) => {
-            console.log(error)
+            (error)
         }
     })
     return mutation

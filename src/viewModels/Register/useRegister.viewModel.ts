@@ -46,8 +46,7 @@ export const useRegisterViewModel = () => {
 
             if (avatarUri) {
                 const { url } = await uploadAvatarMutatio.mutateAsync(avatarUri)
-               
-                console.log(url)
+
                 updateUser({ avatarUrl: url })
             }
         }
@@ -59,8 +58,6 @@ export const useRegisterViewModel = () => {
             registerData
         )
     })
-
-    // console.log(user)
 
     return {
         control,
