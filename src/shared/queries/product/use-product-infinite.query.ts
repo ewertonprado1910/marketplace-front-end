@@ -35,13 +35,16 @@ export const useProductInfiniteQuery = () => {
                 : undefined
         },
         initialPageParam: 1,
-        queryKey: ["products"]
+        queryKey: ["products"],
+        staleTime: 1000 * 60 * 2
     })
 
-    const products = data?.pages.flatMap((page) => page.data).map((product) => ({
-        ...product,
-        photo: BuildmageUrl(product.photo)
-    }))
+    const products = data?.pages
+        .flatMap((page) => page.data)
+        .map((product) => ({
+            ...product,
+            photo: BuildmageUrl(product.photo ?? "")
+        }))
 
     return {
         products,

@@ -1,15 +1,13 @@
 export interface ProductCategory {
     id: number,
     name: string
-
 }
-
 export interface ProductInterface {
     id: number,
     value: string,
     name: string,
     description: string,
-    photo: string,
+    photo?: string,
     height: string,
     width: string,
     weight: string,

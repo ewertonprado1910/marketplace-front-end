@@ -2,9 +2,13 @@ import { Text, TouchableOpacity, View } from "react-native"
 import { AppInput } from "../../../../shared/components/AppInput"
 import { Ionicons } from "@expo/vector-icons"
 import { colors } from "../../../../styles/colors"
+import { useBottomSheetStore } from "../../../../shared/store/bottomsheet-estore"
+import { Filter } from "../Filter"
 
 
 export const SearchInput = () => {
+    const { open } = useBottomSheetStore()
+
     return (
         <View>
             <Text className="text-2xl font-bold mt-6">Explorar Produtos</Text>
@@ -14,7 +18,13 @@ export const SearchInput = () => {
                     <AppInput leftIcon="search" className="text-lg" />
                 </View>
 
-                <TouchableOpacity className="ml-4 mt-11 items-center justify-center rounded-lg border-[1px] w-[48px] h-[48px] border-purple-base">
+                <TouchableOpacity
+                    onPress={() => {
+                        open({
+                            content: <Filter/>
+                        })
+                    }}
+                    className="ml-4 mt-11 items-center justify-center rounded-lg border-[1px] w-[48px] h-[48px] border-purple-base">
                     <Ionicons
                         name="filter-outline"
                         size={25}

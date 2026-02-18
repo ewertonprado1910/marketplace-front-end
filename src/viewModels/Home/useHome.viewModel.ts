@@ -21,10 +21,20 @@ export const useHomeViewModel = () => {
     const hanldeRefresh = async () => {
         await refetch()
     }
+
+    const handleEnReached = () => {
+        handleLoadMore()
+    }
+
     console.log(JSON.stringify(products, null, 2))
     return {
         handleLoadMore,
         hanldeRefresh,
-        products
+        products,
+        handleEnReached,
+        isLoading,
+        hasNextPage,
+        isFetchingNextPage,
+        isRefetching
     }
 }
