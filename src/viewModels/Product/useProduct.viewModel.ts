@@ -3,13 +3,13 @@ import { useGetProductsDetailsQuery } from "../../shared/queries/product/use-get
 
 export const useProductViewModel = (productId: number) => {
     const {
-        data: productDetail,
+        data: productDetails,
         isLoading,
         error
     } = useGetProductsDetailsQuery(productId)
 
     return {
-        productDetail,
+        productDetails,
         isLoading,
         error
     }
