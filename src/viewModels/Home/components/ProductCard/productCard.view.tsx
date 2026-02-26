@@ -1,19 +1,26 @@
 import { FC } from "react"
 import { Image, Text, TouchableOpacity, View } from "react-native"
+import { router } from "expo-router"
 
 import { useProductCardViewModel } from "./useProductCard.viewModel"
 import { Ionicons } from "@expo/vector-icons"
 import { colors } from "../../../../styles/colors"
 
 import { BuildmageUrl } from "../../../../shared/helpers/buildImage"
+import { AppPriceText } from "../../../../shared/components/AppPriceText"
+
 
 export const ProductCardView: FC<
     ReturnType<typeof useProductCardViewModel>> = ({
-        product
+        product,
+        displayName,
+        formatRating
     }) => {
 
         return (
-            <TouchableOpacity className="w-[48%] my-1 rounded-xl shadow-sm overflow-hidden h-[157px] p-[4px] bg-white mb2">
+            <TouchableOpacity 
+            onPress={() => router.push(`/product/${product.id}`)}
+            className="w-[48%] my-1 rounded-xl shadow-sm overflow-hidden h-[157px] p-[4px] bg-white mb2">
                 <View>
                     <Image
                         source={{ uri: BuildmageUrl(product.photo) }}
@@ -33,19 +40,21 @@ export const ProductCardView: FC<
                         color={colors["blue-base"]} />
 
                     <Text className="text-sm font-semibold ml-1">
-                        {product.ratingCount}
+                        {formatRating}
                     </Text>
                 </View>
 
                 <View className="p-3">
                     <Text className="text-xs font-semibold mb-1" numberOfLines={2}>
-                        {product.name}
+                        {displayName}
                     </Text>
 
                     <View className="flex-row items-center">
-                        <Text className="">
-                            R$ {product.value}
-                        </Text>
+                        <AppPriceText
+                            value={Number(product.value)}
+                            classNameCurrency="text-small"
+                            classNameValue="text-lg font-bold flex-1"
+                        />
                     </View>
                 </View>
 

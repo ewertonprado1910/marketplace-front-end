@@ -10,7 +10,12 @@ import { AppButton } from "../../../../shared/components/AppButton"
 
 export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
     productCategory,
-    isLoading
+    isLoading,
+    handleCategoryToggle,
+    handleValueMaxChange,
+    handleValueMinChange,
+    selectedCategories,
+    handleApplyFilters
 }) => {
 
     return (
@@ -34,6 +39,7 @@ export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
                     <View className="flex-row mb-4 w-[100%]">
                         <View className="flex-1">
                             <AppInput
+                                onChangeText={(text) => handleValueMinChange(Number(text))}
                                 placeholder="DE"
                                 keyboardType="numeric"
                                 containerClassName="w-[90%]" />
@@ -42,7 +48,8 @@ export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
 
                         <View className="flex-1">
                             <AppInput
-                                placeholder="DE"
+                                onChangeText={(text) => handleValueMaxChange(Number(text))}
+                                placeholder="ATÉ"
                                 keyboardType="numeric"
                                 containerClassName="w-[90%]" />
                         </View>
@@ -56,22 +63,24 @@ export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
                         <Text>Carregando categorias...</Text>
                     ) : (
                         <View className="mb-6 gap-3">
-                            {
-                                productCategory?.map(({ name, id }) => (
-                                    <TouchableOpacity
-                                        className="flex-row items-center py-2"
-                                        key={`product-category-${id}`}
-                                    >
-                                        <Checkbox
-                                            color={colors["purple-base"]}
-                                            className="mr-3 rounded-full"
-                                        />
+                            {productCategory?.map(({ name, id }) => (
+                                <TouchableOpacity
+                                    onPress={() => handleCategoryToggle(id)}
+                                    className="flex-row items-center py-2"
+                                    key={`product-category-${id}`}
+                                >
+                                    <Checkbox
+                                        value={selectedCategories.includes(id)}
+                                        onValueChange={() => handleCategoryToggle(id)}
+                                        color={colors["purple-base"]}
+                                        className="mr-3 rounded-full"
+                                    />
 
-                                        <Text className="text-base text-gray-400">
-                                            {name}
-                                        </Text>
-                                    </TouchableOpacity>
-                                ))
+                                    <Text className="text-base text-gray-400">
+                                        {name}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))
                             }
                         </View>
                     )
@@ -85,8 +94,8 @@ export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
                         </View>
 
                         <View className="flex-1">
-                            <AppButton>
-                                Limpar filtro
+                            <AppButton onPress={handleApplyFilters}>
+                                Filtrar
                             </AppButton>
                         </View>
                     </View>

@@ -1,8 +1,5 @@
-export interface ProductCategory {
-    id: number,
-    name: string
-}
-export interface ProductInterface {
+
+export interface GetProductsDetailsInterface {
     id: number,
     value: string,
     name: string,
@@ -15,8 +12,12 @@ export interface ProductInterface {
     views: number,
     ratingCount: number,
     categoryId: number,
-    category: ProductCategory
+    category: {
+        id: number,
+        name: string
+    },
     createdAt: string,
     updatedAt: string,
     deletedAt: string
+
 }
