@@ -3,7 +3,7 @@ import { GetProductsDetailsInterface } from "../../../shared/interfaces/http/pro
 import { Image, Text, TouchableOpacity, View } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { colors } from "../../../styles/colors"
-import { BuildmageUrl } from "../../../shared/helpers/buildImage"
+import { BuildImageUrl } from "../../../shared/helpers/buildImage"
 import { router } from "expo-router"
 import { AppPriceText } from "../../../shared/components/AppPriceText"
 
@@ -37,7 +37,7 @@ export const Header: FC<HeaderParams> = ({
                 <Image
                     className="w-full rounded-lg h-[192px]"
                     source={{
-                        uri: BuildmageUrl(productDetails.photo)
+                        uri: BuildImageUrl(productDetails.photo)
                     }} />
 
                 <View className="absolute top-0 right-0 flex-row bg-blue-light px-2 py-1 rounded-bl-lg rounded-tr-lg items-center">

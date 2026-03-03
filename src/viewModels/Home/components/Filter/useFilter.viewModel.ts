@@ -6,6 +6,7 @@ export const useFilterViewModel = () => {
     const {
         data: productCategory,
         isLoading,
+        
     } = useGetProductCategoriesQuery()
 
     const {

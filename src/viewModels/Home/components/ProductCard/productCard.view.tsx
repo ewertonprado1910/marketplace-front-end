@@ -6,7 +6,7 @@ import { useProductCardViewModel } from "./useProductCard.viewModel"
 import { Ionicons } from "@expo/vector-icons"
 import { colors } from "../../../../styles/colors"
 
-import { BuildmageUrl } from "../../../../shared/helpers/buildImage"
+import { BuildImageUrl } from "../../../../shared/helpers/buildImage"
 import { AppPriceText } from "../../../../shared/components/AppPriceText"
 
 
@@ -18,12 +18,12 @@ export const ProductCardView: FC<
     }) => {
 
         return (
-            <TouchableOpacity 
-            onPress={() => router.push(`/product/${product.id}`)}
-            className="w-[48%] my-1 rounded-xl shadow-sm overflow-hidden h-[157px] p-[4px] bg-white mb2">
+            <TouchableOpacity
+                onPress={() => router.push(`/product/${product.id}`)}
+                className="w-[48%] my-1 rounded-xl shadow-sm overflow-hidden h-[157px] p-[4px] bg-white mb2">
                 <View>
                     <Image
-                        source={{ uri: BuildmageUrl(product.photo) }}
+                        source={{ uri: BuildImageUrl(product.photo) }}
                         style={{ width: "100%", height: 85 }}
                         resizeMode="cover"
                         onError={(err) => {
