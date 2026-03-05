@@ -37,7 +37,8 @@ export const getProductComments = async (
     const {
         data
     } = await marketPlaceApiClient.post<PaginatedResponse<ProductComment>>(
-        "/products/commnets", params
+        "/products/comments", params
     )
+  
     return data
 }
