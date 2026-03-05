@@ -15,7 +15,7 @@ export const cartService = {
             productList,
             newProduct.id
         )
-
+        
         if (existingProduct) {
             const products = productList.map((product) => {
                 if (product.id == newProduct.id) {
