@@ -23,7 +23,9 @@ export const ProductView: FC<
         handleEndReched,
         handleRefetch,
         isRefetching,
-        isFetchingNextPage
+        isFetchingNextPage,
+        handleAddToCart,
+        handleOpenReview
     }) => {
         if (error) <Error />
 
@@ -41,7 +43,9 @@ export const ProductView: FC<
                     refreshing={isRefetching}
                     renderItem={({ item }) => <CommentItem comment={item} />}
                     ListHeaderComponent={
-                        <Header productDetails={productDetails} />}
+                        <Header
+                            handleOpenReview={handleOpenReview}
+                            productDetails={productDetails} />}
                     ListFooterComponent={
                         <ListFooter isLoadingMore={isFetchingNextPage} />}
                     ListEmptyComponent={
@@ -49,7 +53,9 @@ export const ProductView: FC<
                     }
                     contentContainerClassName="pb-6"
                 />
-                <AddToCartFooter product={productDetails} />
+                <AddToCartFooter
+                    handleAddToCart={handleAddToCart}
+                    product={productDetails} />
             </SafeAreaView>
         )
     }

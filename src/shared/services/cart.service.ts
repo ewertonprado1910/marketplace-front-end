@@ -15,7 +15,7 @@ export const cartService = {
             productList,
             newProduct.id
         )
-        
+
         if (existingProduct) {
             const products = productList.map((product) => {
                 if (product.id == newProduct.id) {
@@ -31,7 +31,7 @@ export const cartService = {
         const products = [...productList, { ...newProduct, quantity: 1 }]
         const total = cartService.calculateTotal(products)
         return {
-            products: products,
+            products,
             total
         }
     },
@@ -47,5 +47,35 @@ export const cartService = {
         const total = cartService.calculateTotal(products)
 
         return { products, total }
-    }
+    },
+
+    updateProductQuantity: ({
+        productId,
+        productList,
+        quantity
+    }: {
+        productList: CartProduct[],
+        productId: number,
+        quantity: number
+    }) => {
+        if (quantity <= 0) {
+            return cartService.removeProductsFromList(productList, productId)
+        }
+
+        const products = productList.map((product) => {
+            if (product.id === productId) {
+                return { ...product, quantity }
+            } else {
+                return product
+            }
+        })
+
+        const total = cartService.calculateTotal(products)
+
+        return { products, total }
+    },
+
+    getIemCount: (productList: CartProduct[]) =>
+        productList.reduce((acc, product
+        ) => acc + product.quantity, 0)
 }

@@ -9,10 +9,12 @@ import { AppPriceText } from "../../../../shared/components/AppPriceText"
 
 interface HeaderParams {
     productDetails: GetProductsDetailsInterface
+    handleOpenReview: () => void
 }
 
 export const Header: FC<HeaderParams> = ({
-    productDetails
+    productDetails,
+    handleOpenReview
 }) => {
 
     return (
@@ -118,10 +120,16 @@ export const Header: FC<HeaderParams> = ({
                 </View>
 
                 <View className="flex-row justify-between items-center py-4 border-t border-gray-200">
-                    <Text className="text-lg text-gray-800 font-bold">Avaliações</Text>
+                    <Text className="text-lg text-gray-800 font-bold">
+                        Avaliações
+                    </Text>
 
-                    <TouchableOpacity>
-                        <Text className="text-purple-base text-base font-medium">Avaliar</Text>
+                    <TouchableOpacity
+                        onPress={handleOpenReview}
+                    >
+                        <Text className="text-purple-base text-base font-medium">
+                            Avaliar
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
