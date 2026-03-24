@@ -29,7 +29,7 @@ export const ProductCardView: FC<
                         onError={(err) => {
                             console.log("IMAGE ERROR:", err.nativeEvent)
                         }}
-                        onLoad={() => console.log("IMAGE LOADED:", product.photo)}
+                        // onLoad={() => console.log("IMAGE LOADED:", product.photo)}
                     />
                 </View>
 

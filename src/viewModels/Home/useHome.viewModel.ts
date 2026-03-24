@@ -38,7 +38,7 @@ export const useHomeViewModel = () => {
         handleLoadMore()
     }
 
-    console.log(JSON.stringify(products, null, 2))
+   // console.log(JSON.stringify(products, null, 2))
     return {
         handleLoadMore,
         hanldeRefresh,

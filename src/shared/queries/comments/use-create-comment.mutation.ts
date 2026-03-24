@@ -12,7 +12,7 @@ export const useCreateCommentMutation = (productId: number) => {
                 queryKey: ["user-comment", productId]
             }),
                 queryClient.invalidateQueries({
-                    queryKey: ["products-comments", productId]
+                    queryKey: ["product-comments", productId]
                 })
 
             Toast.success(

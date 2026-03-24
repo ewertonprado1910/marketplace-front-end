@@ -84,7 +84,6 @@ export const useProductViewModel = (productId: number) => {
             })
 
         })
-        console.log("CLICOU EM AVALIAR")
     }
 
     return {
