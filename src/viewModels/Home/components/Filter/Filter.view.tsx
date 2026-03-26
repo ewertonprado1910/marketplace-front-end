@@ -7,6 +7,8 @@ import { Ionicons } from "@expo/vector-icons"
 import { colors } from "../../../../styles/colors"
 import { AppInput } from "../../../../shared/components/AppInput"
 import { AppButton } from "../../../../shared/components/AppButton"
+import { router } from "expo-router"
+import { useBottomSheetStore } from "../../../../shared/store/bottomsheet-estore"
 
 export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
     productCategory,
@@ -17,6 +19,7 @@ export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
     selectedCategories,
     handleApplyFilters
 }) => {
+    const { close } = useBottomSheetStore()
 
     return (
         <ScrollView>
@@ -26,8 +29,12 @@ export const FilterView: FC<ReturnType<typeof useFilterViewModel>> = ({
                         Filtrar anúncios
                     </Text>
 
-                    <TouchableOpacity>
-                        <Ionicons name="close" size={20} color={colors["purple-base"]} />
+                    <TouchableOpacity
+                        onPress={close}
+                    >
+                        <Ionicons
+                            name="close" size={20}
+                            color={colors["purple-base"]} />
                     </TouchableOpacity>
                 </View>
 

@@ -3,8 +3,18 @@ import { AppPriceText } from "../../../../shared/components/AppPriceText"
 import { Ionicons } from "@expo/vector-icons"
 import { colors } from "../../../../styles/colors"
 import { AppButton } from "../../../../shared/components/AppButton"
+import { useCartStore } from "../../../../shared/store/cart-store"
+import { FC } from "react"
 
-export const CartFooter = () => {
+interface CartFooterParams {
+    openCardBottomSheet: () => void
+}
+
+export const CartFooter: FC<CartFooterParams> = ({
+    openCardBottomSheet
+}) => {
+    const { total } = useCartStore()
+
     return (
         <View className="bg-white p-4 rounded-lg mt-6">
             <View className="flex-row justify-between items-center mb-4">
@@ -15,7 +25,7 @@ export const CartFooter = () => {
                 <AppPriceText
                     classNameCurrency="text-base text-gray-900 font-bold"
                     classNameValue="text-base text-gray-900 font-bold"
-                    value={190}
+                    value={total}
                 />
             </View>
 
@@ -32,7 +42,9 @@ export const CartFooter = () => {
                             color={colors["blue-base"]}
                         />
 
-                        <Text className="text-purple-base ml-1 text-sm font-bold">
+                        <Text 
+                        onPress={openCardBottomSheet}
+                        className="text-purple-base ml-1 text-sm font-bold">
                             Adicionar cartão
                         </Text>
                     </TouchableOpacity>
