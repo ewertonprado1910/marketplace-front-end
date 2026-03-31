@@ -1,8 +1,8 @@
 import { AddCardBottomSheetView } from "./AddCardBottomSheet.view"
-import { useCardBottomSheetViewModel } from "./useCardBottomSheet.viewModel"
+import { useAddCardBottomSheetViewModel } from "./useAddCardBottomSheet.viewModel"
 
 export const AddCardBottomSheet = () => {
-    const viewModel = useCardBottomSheetViewModel()
+    const viewModel = useAddCardBottomSheetViewModel()
 
     return <AddCardBottomSheetView {...viewModel}/>
 }

@@ -4,13 +4,16 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native"
 
 import { colors } from "../../../../styles/colors"
 import { useBottomSheetStore } from "../../../../shared/store/bottomsheet-estore"
-import { AppInput } from "../../../../shared/components/AppInput"
-import { useCardBottomSheetViewModel } from "./useCardBottomSheet.viewModel"
+import { useAddCardBottomSheetViewModel } from "./useAddCardBottomSheet.viewModel"
 import { AppButton } from "../../../../shared/components/AppButton"
+import { AppInputController } from "../../../../shared/components/AppInputController"
 
 export const AddCardBottomSheetView: FC<ReturnType<typeof
-    useCardBottomSheetViewModel>> = ({
-
+    useAddCardBottomSheetViewModel>> = ({
+        handleCreateCreditCard,
+        control,
+        expirationDateMask,
+        cardNumberMask
     }) => {
         const { close } = useBottomSheetStore()
         return (
@@ -33,35 +36,46 @@ export const AddCardBottomSheetView: FC<ReturnType<typeof
                     </View>
 
                     <View className="mt-6 gap-4">
-                        <AppInput
+                        <AppInputController
+                            control={control}
+                            name="titularName"
                             leftIcon="person-outline"
                             label="NOME DO TITULAR"
                             placeholder="Nome completo"
                         />
 
-                        <AppInput
-                            leftIcon="card"
-                            label="NÉMERO DO CARTÃO"
+                        <AppInputController
+                            control={control}
+                            name="number"
+                            leftIcon="card-outline"
+                            label="NÚMERO DO CARTÃO"
                             placeholder="0000 0000 0000 0000"
+                            mask={cardNumberMask}
                         />
 
                         <View className="flex-row gap-2">
                             <View className="flex-1">
-                                <AppInput
+                                <AppInputController
+                                    control={control}
+                                    name="expirationDate"
                                     leftIcon="calendar-outline"
                                     label="VENCIMENTO"
                                     placeholder="MM/AA"
                                     keyboardType="numeric"
                                     maxLength={5}
+                                    mask={expirationDateMask}
                                 />
                             </View>
 
                             <View className="flex-1">
-                                <AppInput
+                                <AppInputController
+                                    control={control}
+                                    name="CVV"
                                     leftIcon="lock-closed-outline"
                                     label="CVV"
-                                    placeholder="0000"
+                                    placeholder="000"
                                     keyboardType="numeric"
+                                    maxLength={3}
                                 />
                             </View>
                         </View>
@@ -77,6 +91,7 @@ export const AddCardBottomSheetView: FC<ReturnType<typeof
 
                         <View className="flex-1">
                             <AppButton
+                            onPress={handleCreateCreditCard}
                                 children="Salvar"
                                 variant="field"
                             />

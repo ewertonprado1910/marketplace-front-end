@@ -1,17 +1,23 @@
-import { Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native"
 import { AppPriceText } from "../../../../shared/components/AppPriceText"
 import { Ionicons } from "@expo/vector-icons"
 import { colors } from "../../../../styles/colors"
 import { AppButton } from "../../../../shared/components/AppButton"
 import { useCartStore } from "../../../../shared/store/cart-store"
 import { FC } from "react"
+import { CreditCard } from "../../../../shared/interfaces/credit-card"
+import { CreditCardItem } from "../CreditCardItem"
 
 interface CartFooterParams {
     openCardBottomSheet: () => void
+    creditCards: CreditCard[]
+    loadingCreditCards: boolean
 }
 
 export const CartFooter: FC<CartFooterParams> = ({
-    openCardBottomSheet
+    openCardBottomSheet,
+    creditCards,
+    loadingCreditCards
 }) => {
     const { total } = useCartStore()
 
@@ -42,13 +48,32 @@ export const CartFooter: FC<CartFooterParams> = ({
                             color={colors["blue-base"]}
                         />
 
-                        <Text 
-                        onPress={openCardBottomSheet}
-                        className="text-purple-base ml-1 text-sm font-bold">
+                        <Text
+                            onPress={openCardBottomSheet}
+                            className="text-purple-base ml-1 text-sm font-bold">
                             Adicionar cartão
                         </Text>
                     </TouchableOpacity>
                 </View>
+
+                {loadingCreditCards ? (
+                    <View className="py-4 items-center">
+                        <ActivityIndicator
+                            size={"small"}
+                            color={colors["purple-base"]}
+                        />
+                        <Text className="text-gray-500 text-sm mt-2">
+                            Carregando cartôes
+                        </Text>
+                    </View>
+                ) : (
+                    <FlatList
+                        data={creditCards}
+                        renderItem={({ item }) =>
+                            <CreditCardItem creditCard={item} />}
+                        className="gap-3"
+                    />
+                )}
 
                 <AppButton
                     children="Confirmar compra"

@@ -11,19 +11,25 @@ import { CartFooter } from "./components/CartFooter"
 
 export const CartView: FC<ReturnType<typeof useCartViewModel>> = ({
     products,
-    openCardBottomSheet
+    openCardBottomSheet,
+    creditCards,
+    loadingCreditCards
 }) => {
     return (
-        <SafeAreaView>
+        <SafeAreaView className="flex-1">
             <FlatList
                 contentContainerClassName="px-6"
                 data={products}
                 renderItem={({ item }) => <ProductCartCard product={item} />}
                 keyExtractor={({ id }) => `product-cart-id-${id}`}
                 ListEmptyComponent={<EmptyList />}
-                ListHeaderComponent={<CartHeader/>}
-                ListFooterComponent={products.length > 0 ? 
-                <CartFooter openCardBottomSheet={openCardBottomSheet}/> : null}
+                ListHeaderComponent={<CartHeader />}
+                ListFooterComponent={products.length > 0 ?
+                    <CartFooter 
+                    loadingCreditCards={loadingCreditCards}
+                    openCardBottomSheet={openCardBottomSheet}
+                        creditCards={creditCards} />
+                    : null}
             />
         </SafeAreaView>
     )
