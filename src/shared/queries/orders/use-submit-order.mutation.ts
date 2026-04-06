@@ -1,12 +1,17 @@
-import { useMutation } from "@tanstack/react-query"
-import { submitOrder } from "../../services/order.service"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { submitOrder } from "../../services/orders.service"
 import { Toast } from "toastify-react-native"
 
 export const useSbmitOrderMutation = () => {
+    const queryClient = useQueryClient()
+
     const mutation = useMutation({
         mutationFn: submitOrder,
         onSuccess: (res) => {
-            console.log(res.message, "Deu certo")
+            queryClient.invalidateQueries({
+                queryKey: ["user-orders"]
+            })
+            console.log(res.message)
         },
         onError: (err) => {
             console.log(err)
