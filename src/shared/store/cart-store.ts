@@ -34,7 +34,7 @@ export const useCartStore = create<CartStore>()(
                 newProduct
             )),
 
-        clearCart: () => { },
+        clearCart: () => set({ products: [], total: 0 }),
 
         getItemCount: () => cartService.getIemCount(get().products),
 
