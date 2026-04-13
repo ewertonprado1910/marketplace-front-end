@@ -13,6 +13,7 @@ export const AppInputController = <T extends FieldValues
     control,
     errors,
     ...rest
+
 }: AppInputControllerProps<T>) => {
 
     return (
@@ -23,7 +24,8 @@ export const AppInputController = <T extends FieldValues
                 field: {
                     onBlur,
                     onChange,
-                    value
+                    value,
+                    ref
                 },
                 fieldState: { error },
                 formState: { isSubmitting }

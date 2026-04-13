@@ -2,7 +2,7 @@ import { Pressable, Text, TextInput, TextInputProps, TouchableOpacity, View } fr
 import { Ionicons } from "@expo/vector-icons"
 
 import { appInputVariants, AppInputVariantsProps } from "./input.variants"
-import { FC } from "react"
+import { FC, ForwardedRef } from "react"
 import { useAppInputViewModel } from "./useAppInputViewModel"
 
 export interface AppInputProps extends TextInputProps, AppInputVariantsProps {
@@ -14,7 +14,7 @@ export interface AppInputProps extends TextInputProps, AppInputVariantsProps {
     error?: string
 }
 
-export const AppInput: FC<AppInputProps> = ({
+export const AppInput: FC< AppInputProps> = ({
     label,
     leftIcon,
     rightIcon,

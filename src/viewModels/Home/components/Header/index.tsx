@@ -4,14 +4,15 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 
 import { colors } from "../../../../styles/colors"
 import { router } from "expo-router"
-import { SearchInput } from "../SearchInput"
 
 export const HomeHeader = () => {
     const { user, logout } = useUserStore()
 
     return (
         <View>
-            <TouchableOpacity className="flex-row items-center gap-6">
+            <TouchableOpacity
+                onPress={() => router.push("profile")}
+                className="flex-row items-center gap-6">
                 <View className="relative">
                     {user?.avatarUrl ? (
                         <Image

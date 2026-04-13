@@ -7,6 +7,9 @@ import { colors } from "../../../../styles/colors"
 import { AppInput } from "../../../../shared/components/AppInput"
 import { AppButton } from "../../../../shared/components/AppButton"
 import { Stars } from "./components/Stars"
+import { useModalStore } from "../../../../shared/store/modal-store"
+import { router } from "expo-router"
+
 
 export const ReviewBottomSheetView: FC<
     ReturnType<typeof useReviewBottomSheetViewModel>
@@ -17,6 +20,8 @@ export const ReviewBottomSheetView: FC<
     handleFomrSubmit,
     isLoading
 }) => {
+        const { close } = useModalStore()
+
         return (
             <View className="bg-background ">
 
@@ -28,7 +33,9 @@ export const ReviewBottomSheetView: FC<
                         }
                     </Text>
 
-                    <TouchableOpacity className="w-8 h-8 items-center justify-center rounded-[9px] border border-gray-400">
+                    <TouchableOpacity
+                        onPress={close}
+                        className="w-8 h-8 items-center justify-center rounded-[9px] border border-gray-400">
                         <Ionicons
                             name="close"
                             color={colors.gray[400]}

@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios, { AxiosInstance } from "axios"
 import { useUserStore } from "../store/user-store"
 
-export const baseURL = "http://192.168.1.35:3001"
+export const baseURL = "http://192.168.1.36:3001"
 
 export class MarketPlaceApiClient {
   private instance: AxiosInstance
@@ -91,9 +91,9 @@ export class MarketPlaceApiClient {
         }
 
         if (error.response && error.response.data) {
-
+          console.log(error.response.data,  "ERRO AO CARREGAR A TELA")
           return Promise.reject(new Error(error.response.data.message))
-
+          
         } else {
 
           return Promise.reject(new Error("Falha na requisição"))

@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query"
 import * as authService from "../../services/alth.service"
 import { LoginHttpParams } from "../../interfaces/http/login"
 import { useUserStore } from "../../store/user-store"
+import { Toast } from "toastify-react-native"
 
 export const useLoginMutation = () => {
     const { setSession } = useUserStore()
@@ -12,11 +13,12 @@ export const useLoginMutation = () => {
             authService.Login(userData),
 
         onSuccess: (response) => {
+            Toast.success("Bem vindo")
             setSession(response)
         },
 
         onError: (error: any) => {
-            console.log(error, "Login Mutation")
+            Toast.error(error.message)
         }
     })
     return mutation

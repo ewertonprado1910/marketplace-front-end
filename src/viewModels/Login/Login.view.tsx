@@ -54,7 +54,7 @@ export const LoginView: FC<ReturnType<
                                 Ainda não tem uma conta?
                             </Text>
                             <AppButton
-                            className="mt-1"
+                                className="mt-1"
                                 children="Cadastrar"
                                 variant="outlined"
                                 rightIcon="arrow-forward"

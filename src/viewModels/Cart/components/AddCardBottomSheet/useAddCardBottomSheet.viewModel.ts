@@ -3,6 +3,9 @@ import { useCreateCreditCardMutation } from "../../../../shared/queries/credit-c
 import { yupResolver } from "@hookform/resolvers/yup"
 import { creditCardSchema } from "./credit-card.schema"
 import { useBottomSheetStore } from "../../../../shared/store/bottomsheet-estore"
+import { useEffect, useRef, useState } from "react"
+
+export type FocusedField = "number" | "name" | "expiry" | "cvv"
 
 const formatExpirationDateFormat = (
     dataString: string,
@@ -32,6 +35,13 @@ const formatExpirationDateFormat = (
 
 export const useAddCardBottomSheetViewModel = () => {
     const createCreditCardMutation = useCreateCreditCardMutation()
+    const [focusedField, setFocusedField] = useState<FocusedField | null>(null)
+
+    const [delayedFocusedField, setDelayedFocusedField] = useState<FocusedField | null>(null)
+
+
+    const blurTimeoutRef = useRef<ReturnType<
+        typeof setTimeout> | null>(null)
 
     const {
         control,
@@ -102,10 +112,39 @@ export const useAddCardBottomSheetViewModel = () => {
         return cleaned.replace(/(\d{4})(?=\d)/g, "$1 ").trim()
     }
 
+    const handleFieldFocus = (field: FocusedField) => {
+        if (blurTimeoutRef.current) {
+            clearTimeout(blurTimeoutRef.current)
+        }
+        setFocusedField(field)
+    }
+
+    const handleFieldBlur = () => {
+        blurTimeoutRef.current = setTimeout(() => {
+            setFocusedField(null)
+            setDelayedFocusedField(null)
+        }, 100)
+    }
+
+    const isFlipped = focusedField === "cvv"
+
+    const watchedValues = watch()
+
     return {
         handleCreateCreditCard,
         control,
         expirationDateMask,
-        cardNumberMask
+        cardNumberMask,
+        handleFieldFocus,
+        handleFieldBlur,
+        isFlipped,
+        focusedField,
+        delayedFocusedField,
+        cardData: {
+            number: watchedValues.number,
+            name: watchedValues.titularName,
+            expiry: watchedValues.expirationDate,
+            cvv: watchedValues.CVV
+        }
     }
 }

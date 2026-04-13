@@ -42,7 +42,7 @@ export const useUserStore = create<UserStore>()(
 
         updateUser: (updateUserData) =>
             set((state) => ({
-                user: state.user ? { ...state.user, ...updateUserData } : null
+                user: state.user ? { ...state.user, ...updateUserData, } : null
             }))
     }),
         {
