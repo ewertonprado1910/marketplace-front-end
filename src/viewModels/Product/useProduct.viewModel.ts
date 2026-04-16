@@ -7,6 +7,7 @@ import { AddToCartModal } from "./components/AddToCartModal"
 import { router } from "expo-router"
 import { useBottomSheetStore } from "../../shared/store/bottomsheet-estore"
 import { ReviewBottomSheet } from "./components/ReviewBottomSheet"
+import { localNotificationsService } from "../../shared/services/local-notifications.service"
 
 
 export const useProductViewModel = (productId: number) => {
@@ -65,6 +66,12 @@ export const useProductViewModel = (productId: number) => {
             name: productDetails.name,
             price: productDetails.value,
             image: productDetails.photo
+        })
+
+        localNotificationsService.scheduleCartReminder({
+            delayInMinute: 30,
+            productId: productDetails.id,
+            productName: productDetails.name
         })
 
         open(createElement(AddToCartModal, {
